@@ -1,5 +1,4 @@
-# Note that we use this script on s390x, so please never build the image
-# elsewhere!
+# Use ./build for building/uploading images.
 
 FROM fedora:35
 

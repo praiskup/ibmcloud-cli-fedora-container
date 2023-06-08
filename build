@@ -7,8 +7,7 @@ set -e
 manifest=ibmcloud-cli
 image=quay.io/praiskup/ibmcloud-cli
 
-#platform=linux/s390x
-for platform in linux/amd64; do
+for platform in linux/amd64 linux/s390x; do
     buildah build \
         --jobs=2 \
         --platform=$platform \

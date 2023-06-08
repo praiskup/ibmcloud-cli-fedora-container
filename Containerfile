@@ -1,6 +1,6 @@
 # Use ./build for building/uploading images.
 
-FROM fedora:37
+FROM fedora:38
 
 RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | sh \
     && ibmcloud plugin install vpc-infrastructure \

@@ -10,7 +10,9 @@ test -n "$image" || die "no image mounted into container"
 echo "Logging-in IBM CLoud, as $email"
 echo "Uploading $image as $base"
 
-ibmcloud login -r jp-tok -u "$email"
+# This requires the
+# IBMCLOUD_API_KEY= exported
+ibmcloud login -r jp-tok
 uploaded_image=$base.qcow2
 
 ibmcloud cos upload \

@@ -9,6 +9,6 @@ RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | sh \
 RUN dnf -y install util-linux-core jq \
     && dnf clean all
 
-COPY upload /usr/bin/upload-image
+COPY container_files/upload /usr/bin/upload-image
  
 CMD upload-image

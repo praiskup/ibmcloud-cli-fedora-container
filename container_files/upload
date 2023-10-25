@@ -5,15 +5,21 @@ base=copr-builder-image-s390x-$(date +"%Y%m%d-%H%M%S")
 email=coprteam@fedoraproject.org
 image=$(mount | cut -d' ' -f3 | grep qcow2| head -1)
 
-test -n "$image" || die "no image mounted into container"
+test -n "$image" || die "no qcow2 image mounted into container"
 
 echo "Logging-in IBM CLoud, as $email"
 echo "Uploading $image as $base"
 
-# This requires the
-# IBMCLOUD_API_KEY= exported
+export IBMCLOUD_API_KEY
+if ! test -v IBMCLOUD_API_KEY; then
+    echo -n "Please enter your IBM Cloud key: " ; read -sr IBMCLOUD_API_KEY ; echo
+fi
+
 ibmcloud login -r jp-tok
 uploaded_image=$base.qcow2
+
+# TODO: pick explicitly --region
+# TODO: use "us-geo" or "jp-geo" region
 
 ibmcloud cos upload \
     --bucket fedora-images \

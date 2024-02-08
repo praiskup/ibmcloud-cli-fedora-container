@@ -29,7 +29,7 @@ ibmcloud cos upload \
 token=$(ibmcloud iam oauth-tokens | sed 's/.* //')
 
 output=$(curl -X POST \
-  "https://jp-tok.iaas.cloud.ibm.com/v1/images?version=2022-01-04&generation=2" \
+  "https://us-east.iaas.cloud.ibm.com/v1/images?version=2024-01-25&generation=2" \
   -H "Authorization: Bearer $token" \
   -H "Content-Type: application/json" \
   -H "accept: application/json" \

@@ -28,25 +28,30 @@ ibmcloud cos upload \
 
 token=$(ibmcloud iam oauth-tokens | sed 's/.* //')
 
-output=$(curl -X POST \
-  "https://us-east.iaas.cloud.ibm.com/v1/images?version=2024-01-25&generation=2" \
-  -H "Authorization: Bearer $token" \
-  -H "Content-Type: application/json" \
-  -H "accept: application/json" \
-  -d '{
-  "name": "'"$base"'",
-  "operating_system": {
-    "name": "fedora-server-34-s390x"
-  },
-  "file": {
-    "href": "cos://jp-tok/fedora-images/'"$uploaded_image"'"
-  },
-  "resource_group": {
-    "id": "803a282c432046c488b775f326ffc867"
-  }
-}')
+function create_in_region() {
+    local region="$1"
+    output=$(curl -X POST \
+      "https://$region.iaas.cloud.ibm.com/v1/images?version=2024-01-25&generation=2" \
+      -H "Authorization: Bearer $token" \
+      -H "Content-Type: application/json" \
+      -H "accept: application/json" \
+      -d '{
+      "name": "'"$base"'",
+      "operating_system": {
+        "name": "fedora-server-34-s390x"
+      },
+      "file": {
+        "href": "cos://jp-tok/fedora-images/'"$uploaded_image"'"
+      },
+      "resource_group": {
+        "id": "803a282c432046c488b775f326ffc867"
+      }
+    }')
+    image_id=$(echo "$output" | jq .id)
+    image_name=$(echo "$output" | jq .name)
+    echo "Uploaded image $image_id ($image_name) into $region"
+}
 
-image_id=$(echo "$output" | jq .id)
-image_name=$(echo "$output" | jq .name)
-
-echo "Uploaded image $image_id ($image_name)"
+create_in_region "br-sao"
+create_in_region "eu-es"
+create_in_region "us-east"
